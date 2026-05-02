@@ -23,6 +23,12 @@ app.use('/api/appointments', appointmentsRouter)
 app.use('/api/favorites', favoritesRouter)
 app.use('/api/uploads', uploadsRouter)
 
+if (process.env.NODE_ENV === 'production') {
+  const clientDist = path.join(__dirname, '../../client/dist')
+  app.use(express.static(clientDist))
+  app.get('*', (_req, res) => res.sendFile(path.join(clientDist, 'index.html')))
+}
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
 })
